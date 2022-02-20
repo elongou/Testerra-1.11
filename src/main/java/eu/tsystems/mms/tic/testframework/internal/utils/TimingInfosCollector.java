@@ -98,7 +98,12 @@ public class TimingInfosCollector {
             timingInfosPerContext.get(context).add(i);
         });
 
-        /*
+        return calculate_new(times, timingInfosPerContext);
+    }
+
+	private Calculations calculate_new(Map<String, List<Long>> times,
+			Map<String, List<TimingInfo>> timingInfosPerContext) {
+		/*
          calculate
           */
         Map<String, Long> minValuesPerContext = new LinkedHashMap<>();
@@ -123,7 +128,7 @@ public class TimingInfosCollector {
         calculations.empty = false;
 
         return calculations;
-    }
+	}
 
     public Calculations getCalculations() {
         return calculations;
