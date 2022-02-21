@@ -159,34 +159,7 @@ public class Timer implements Loggable {
         Throwable catchedThrowable = null;
         int runCount = 1;
         while (!isTimeOver()) {
-            try {
-                log().trace("##### Starting Sequence Iteration #" + runCount + " #####");
-                sequence.run();
-                log().trace("Sequence Iteration #" + runCount + " executed without throwing Throwable");
-                /*
-                Look at the pass state that could be set explicitly.
-                 */
-                Boolean passState = sequence.getPassState();
-                if (passState == null) {
-                    log().trace("Sequence Iteration #" + runCount + " successful without passState");
-                    success = true;
-                } else {
-                    log().trace("Sequence Iteration #" + runCount + " pass state: " + passState);
-                    success = passState;
-                }
-            } catch (Throwable throwable) {
-                success = false;
-
-                if (throwable instanceof OutOfMemoryError) {
-                    throw new SystemException("OOME catched", throwable);
-                } else if (throwable instanceof IllegalArgumentException) {
-                    // jump out immediately
-                    throw (IllegalArgumentException) throwable;
-                } else {
-                    catchedThrowable = throwable;
-                    log().debug("Sequence Iteration #" + runCount + " failed", throwable);
-                }
-            }
+        	sequenceIteration(sequence, runCount);
             runCount++;
 
             if (success) {
@@ -218,6 +191,41 @@ public class Timer implements Loggable {
         // throw
         throw timeoutException;
     }
+
+	private <T> boolean sequenceIteration(Sequence<T> sequence, int runCount)
+			throws eu.tsystems.mms.tic.testframework.utils.SystemException {
+		boolean success;
+		Throwable catchedThrowable = null;
+		try {
+		    log().trace("##### Starting Sequence Iteration #" + runCount + " #####");
+		    sequence.run();
+		    log().trace("Sequence Iteration #" + runCount + " executed without throwing Throwable");
+		    /*
+		    Look at the pass state that could be set explicitly.
+		     */
+		    Boolean passState = sequence.getPassState();
+		    if (passState == null) {
+		        log().trace("Sequence Iteration #" + runCount + " successful without passState");
+		        success = true;
+		    } else {
+		        log().trace("Sequence Iteration #" + runCount + " pass state: " + passState);
+		        success = passState;
+		    }
+		} catch (Throwable throwable) {
+		    success = false;
+
+		    if (throwable instanceof OutOfMemoryError) {
+		        throw new SystemException("OOME catched", throwable);
+		    } else if (throwable instanceof IllegalArgumentException) {
+		        // jump out immediately
+		        throw (IllegalArgumentException) throwable;
+		    } else {
+		        catchedThrowable = throwable;
+		        log().debug("Sequence Iteration #" + runCount + " failed", throwable);
+		    }
+		}
+		return success;
+	}
 
     private TimeoutException createTimeoutException(Throwable catchedThrowable) {
                 /*
