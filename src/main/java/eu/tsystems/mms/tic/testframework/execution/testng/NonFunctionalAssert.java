@@ -1042,7 +1042,11 @@ private static void assertNotEqualsNew(float actual1, float actual2, float delta
     }
 //here2
     public static void assertNotEquals(Set<?> actual, Set<?> expected, String message) {
-        boolean fail;
+        assertNotEqualsNew2(actual, expected, message);
+    }
+
+	private static void assertNotEqualsNew2(Set<?> actual, Set<?> expected, String message) {
+		boolean fail;
         try {
             Assert.assertEquals(actual, expected, message);
             fail = true;
@@ -1053,24 +1057,14 @@ private static void assertNotEqualsNew(float actual1, float actual2, float delta
         if (fail) {
             Assert.fail(message);
         }
-    }
+	}
 
     public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected) {
         assertNotEquals(actual, expected, null);
     }
 //here2
     public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String message) {
-        boolean fail;
-        try {
-            Assert.assertEquals(actual, expected, message);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
+    	assertNotEqualsNew2(actual, expected, message);
     }
 
     static public void assertNotEquals(double actual1, double actual2, double delta) {
