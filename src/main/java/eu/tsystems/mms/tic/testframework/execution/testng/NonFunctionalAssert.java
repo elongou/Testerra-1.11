@@ -33,7 +33,7 @@ import static org.testng.internal.EclipseInterface.*;
 /**
  * @deprecated Use {@link OptionalAssert} instead
  */
-public class NonFunctionalAssert {
+public class NonFunctionalAssert extends AssertEqualsNew {
 
     /**
      * Protect constructor since it is a static only class
@@ -1015,21 +1015,7 @@ public class NonFunctionalAssert {
         assertNotEqualsNew(actual1, actual2, delta, message);
     }
 
-private static void assertNotEqualsNew(float actual1, float actual2, float delta, String message) {
-	boolean fail;
-	try {
-	    Assert.assertEquals(actual1, actual2, delta, message);
-	    fail = true;
-	} catch (AssertionError e) {
-	    fail = false;
-	}
-
-	if (fail) {
-	    Assert.fail(message);
-	}
-}
-
-    static public void assertNotEquals(float actual1, float actual2, float delta) {
+static public void assertNotEquals(float actual1, float actual2, float delta) {
         assertNotEquals(actual1, actual2, delta, null);
     }
 //here
@@ -1045,21 +1031,7 @@ private static void assertNotEqualsNew(float actual1, float actual2, float delta
         assertNotEqualsNew2(actual, expected, message);
     }
 
-	private static void assertNotEqualsNew2(Set<?> actual, Set<?> expected, String message) {
-		boolean fail;
-        try {
-            Assert.assertEquals(actual, expected, message);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
-	}
-
-    public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected) {
+	public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected) {
         assertNotEquals(actual, expected, null);
     }
 //here2

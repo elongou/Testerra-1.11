@@ -40,7 +40,7 @@ import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 /**
  * A dummy class for collecting asserts.
  */
-public class AssertCollector {
+public class AssertCollector extends AssertEqualsNew {
 
     /**
      * Protect constructor since it is a static only class
@@ -950,20 +950,7 @@ public class AssertCollector {
     /////
     // assertNotEquals
     //
-
-    public static void assertNotEquals(Object actual1, Object actual2, String message) {
-        boolean fail;
-        try {
-            Assert.assertEquals(actual1, actual2);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
-    }
+    
 
     public static void assertNotEquals(Object actual1, Object actual2) {
         assertNotEquals(actual1, actual2, null);
@@ -1025,36 +1012,8 @@ public class AssertCollector {
         assertNotEquals(actual1, actual2, null);
     }
 
-    static public void assertNotEquals(float actual1, float actual2, float delta, String message) {
-        boolean fail;
-        try {
-            Assert.assertEquals(actual1, actual2, delta, message);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
-    }
-
     static public void assertNotEquals(float actual1, float actual2, float delta) {
         assertNotEquals(actual1, actual2, delta, null);
-    }
-
-    static public void assertNotEquals(double actual1, double actual2, double delta, String message) {
-        boolean fail;
-        try {
-            Assert.assertEquals(actual1, actual2, delta, message);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
     }
 
     public static void assertNotEquals(Set<?> actual, Set<?> expected) {
